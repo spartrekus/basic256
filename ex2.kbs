@@ -1,0 +1,33 @@
+clg
+
+
+color red
+circle 70,70,10
+
+
+color green
+circle 90,90,10
+
+
+
+color blue
+circle 90,290,68
+
+
+imgload 105,150,"cat.png"
+
+
+color green
+circle 90,90,10
+
+color red
+line 50,50,200,200
+penwidth 5
+line 100,200,200,200
+penwidth 10
+line 100,200,50,50
+
+
+
+ 
+
