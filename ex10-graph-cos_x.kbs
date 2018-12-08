@@ -1,0 +1,23 @@
+
+clg
+font "arial", 15,100
+graphsize 500,500
+fastgraphics
+
+a=-1:b=-3:c=1
+
+
+for y = -10 to 10 
+for x = -10 to 10
+  circle int(30*x)+150, int(30*y)+ 150,2
+next x
+next y
+
+line 150,0,150,300 : line 0,150,300,150
+
+color red
+for x = -10 to 10 step .1
+  y = cos( x ) 
+  circle 30*x +150, 150 - 30*y,2
+next x
+
