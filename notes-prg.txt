@@ -1,0 +1,566 @@
+
+clg
+font "arial", 15,100
+graphsize 500,500
+fastgraphics
+
+a=-1:b=-3:c=1
+
+
+for y = -10 to 10 
+for x = -10 to 10
+  circle int(30*x)+150, int(30*y)+ 150,2
+next x
+next y
+
+line 150,0,150,300 : line 0,150,300,150
+
+color red
+for x = -10 to 10 step .1
+  y = cos( x ) 
+  circle 30*x +150, 150 - 30*y,2
+next x
+
+clg
+
+
+color red
+circle 70,70,10
+
+
+color green
+circle 90,90,10
+
+
+
+color blue
+circle 90,290,68
+
+
+imgload 105,150,"cat.png"
+
+
+color green
+circle 90,90,10
+
+
+ clg
+
+
+color red
+circle 70,70,10
+
+
+color green
+circle 90,90,10
+
+
+
+color blue
+circle 90,290,68
+
+
+imgload 105,150,"cat.png"
+
+
+color green
+circle 90,90,10
+
+color red
+line 50,50,200,200
+penwidth 5
+line 100,200,200,200
+penwidth 10
+line 100,200,50,50
+
+
+
+ 
+
+# Based in an example program, a retake on a 3D simulation
+graphsize 500,500
+vx=.002
+vy=.003
+vz=.005
+xball=1
+yball=1
+zball=1
+while 1=1
+a = mousex / 200
+b = mousey / 200
+gosub update
+end while
+update:
+fastgraphics
+clg
+x=0
+y=2
+z=0
+gosub matrix
+x1=sx
+y1=sy
+x=2
+y=0
+z=0
+gosub matrix
+x2=sx
+y2=sy
+x=2
+y=2
+z=0
+gosub matrix
+x3=sx
+y3=sy
+color darkgreen
+poly{200,200,x1,y1,x3,y3,x2,y2}
+xball=xball+vx
+yball=yball+vy
+zball=zball+vz
+vz=vz-.0005
+if xball>2 then vx=-vx
+if xball<0 then vx=-vx
+if yball>2 then vy=-vy
+if yball<0 then vy=-vy
+if zball<0 then vz=-vz*.98
+color black
+x=xball
+y=yball
+z=0
+gosub matrix
+chord sx,sy,10,5-((y1+y2+y3)/100),0,pi*2
+color red
+x=xball
+y=yball
+z=zball
+gosub matrix
+circle sx,sy,5
+
+if y3<200 then
+color darkyellow
+poly{200,200,x1,y1,x3,y3,x2,y2}
+end if
+refresh
+clg
+return
+matrix:
+u = x
+v = y
+w = z
+u2 = u * cos(a) - v * sin(a)
+v2 = u * sin(a) + v * cos(a)
+w2 = w
+u = u2
+v = v2
+w = w2
+u2 = u
+v2 = v * cos(b) - w * sin(b)
+w2 = v * sin(b) + w * cos(b)
+u = u2
+v = v2
+w = w2
+sx = 200+u * (w + 2) * 35
+sy = 200+v * (w + 2) * 35
+returnarc(150-25, 70-60, 60, 120,0,2*pi) # left ear
+arc(240-25, 70-60, 60, 120,0,2*pi) # right ear
+color (black,white)
+circle(200, 170, 75) # face
+rect(185, 200, 15, 10) # left tooth
+rect(200, 200, 15, 10) # right tooth
+color (black,black)
+circle(170, 150, 5) # left eye
+circle(230, 150, 5) # right eye
+
+line(150, 200, 250, 200) # mouthclg
+font "arial", 15,100
+graphsize 500,500
+fastgraphics
+#Graph Area######################
+xmin=-6
+xmax=6
+ymin=-5
+ymax=5
+################################
+tx=500/(xmax-xmin)
+ty=500/(ymax-ymin)
+area=0
+#x Boudaries######################
+bound1=-3
+bound2=3
+#################################
+range=bound2-bound1
+dx=.02
+Volume_solid=0
+for s = 0 to 2*pi step .1
+if s <pi then
+ for y = ymin to ymax  
+ for x = xmin to xmax
+  color black
+  circle tx*x-xmin*tx, ty*y-ymin*ty,3
+  if y=ymax+ymin then text tx*x-xmin*tx-15, ty*y-ymin*ty,x
+  if x=0 then text tx*x-xmin*tx-15,ty*y-ymin*ty,-y+ymax+ymin
+ next x : next y
+line -xmin*tx,0,-xmin*tx,500 : line 0,500+ymin*ty,500,500+ymin*ty
+end if
+for x = xmin to xmax step dx
+xg= tx*x-xmin*tx
+color red
+y0=y
+#Equation###############################
+y=sin(x)+2
+########################################
+yg1= 500-ty*y+ty*ymin
+circle xg, yg1,1
+#Solid
+if x<= bound2 and  x>= bound1 then
+fill= 100*(sin(s))+100
+color rgb(200-fill,200-fill,fill)
+arc xg-.05*y*ty*2, yg1, .1*y*ty*2, y*ty*2,s,.1
+if s=0 then Volume_solid=Volume_solid+dx*(y0/2+y/2)^2*pi
+#Area
+if s <pi then
+color green
+if int(xg+1)/2 = int(xg/2+1) then line xg,yg1,xg,500+ymin*ty
+fill= 255*(x-bound1)/range
+end if
+end if
+next x
+refresh
+if s=0 then pause .5
+pause .02
+next s
+input "press any key",k
+Text 20,20, "Volume="+Volume_solid
+refreshfont "arial", 15,100
+ graphsize 500,500
+ fastgraphics
+ # Choose the dimentions of the graph#############
+ xmin=-5
+ xmax=5
+ ymin=-5
+ ymax=5
+ ##########################################
+ y1=0:y2=0
+ tx=500/(xmax-xmin)
+ ty=500/(ymax-ymin)
+ for y = ymin to ymax 
+ for x = xmin to xmax
+ circle tx*x-xmin*tx, ty*y-ymin*ty,3
+ if y=ymax+ymin then text tx*x-xmin*tx-15, ty*y-ymin*ty,x
+ if x=0 then text tx*x-xmin*tx-15, ty*y-ymin*ty,-y+ymax+ymin
+ next x : next y
+ line -xmin*tx,0,-xmin*tx,500 : line 0,500+ymin*ty,500,500+ymin*ty
+ rem generate area
+ #Choose the x boundaries#####################
+ bound1=-2
+ bound2=2
+ #########################################
+ area=0
+ range=bound2-bound1
+ dx=.01
+ for x = xmin to xmax step dx
+ xg= tx*x-xmin*tx
+ color red
+ p1=y1
+ #Equation1 red#############################
+ y1=x^2
+ #########################################
+ yg1= 500-ty*y1+ty*ymin
+ circle xg, yg1,1
+ color blue
+ p2=y2
+ #Equation2 blue###########################
+ y2=x-2
+ ########################################
+ yg2= 500-ty*y2+ty*ymin
+ circle xg, yg2,1
+ if x<= bound2 and x>= bound1 then
+ color darkgreen
+ area=area+((y1+p1)/2-(y2+p2)/2)*dx
+ if int(xg+1)/2 = int(xg/2+1) then line xg,yg1,xg,yg2
+ fill= 255*(x-bound1)/range
+ end if
+ next x
+ refresh
+ input "press a key",a
+ text 20,20,"Area="+area
+ refresh
+dim arrow(8) 
+arrow = {0,0,0,0,0,70,0,0}
+r=int(rand*2*pi)+.1
+clg
+fastgraphics
+for i = 0 to r step .005
+stamp 150,150,2,i,arrow
+refresh
+next i
+input "What is the angle?",r$
+print r*180/pigraphsize 600,440
+ fastgraphics
+ font ("arial",20,100)
+ Dim i(4):Dim j(4):Dim l(4):Dim o(4):Dim s(4):Dim t(4):Dim z(4)
+ i = { 0x10F00, 0x12222, 0x100F0, 0x14444}
+ j = { 0x144C0, 0x18E00, 0x16440, 0x10E20}
+ l = {0x14460, 0x10E80, 0x1C440, 0x12E00 }
+ o = { 0x1CC00, 0x1CC00, 0x1CC00, 0x1CC00}
+ s = {0x106C0, 0x18C40, 0x16C00, 0x14620 }
+ t = {0x10E40, 0x14C40, 0x14E00, 0x14640}
+ z = { 0x10C60, 0x14C80, 0x1C600, 0x12640}
+ Dim board(14,29)
+ Dim stat(7)
+ Score = 0
+ endgame = false
+ initialwait= 0.1
+ # main loop for each newpiece
+ do
+ wait = initialwait
+ rot=int(rand*4)
+ shape = int (rand*7)
+ stat[shape]=stat[shape]+1
+ cores = int (rand*7)+1
+ piecedown = false
+ ypos=-1
+ xpos=5
+ # loop for each frame
+ do 
+ ypos=ypos+1
+ # controls
+ for press = 1 to 4
+ a = key
+ if 16777234=a then xpos=xpos -checkmove(ref (board),a,xpos,ypos,shape$)
+ if 16777236 = a then xpos=xpos +checkmove(ref (board),a,xpos,ypos,shape$)
+ if 16777237=a then wait =0.01
+ if 16777235=a then 
+ oldrot=rot
+ rot = rot+1
+ if rot = 4 then rot = 0
+ gosub selectshape
+ if checkmove(ref (board),a,xpos,ypos,shape$)=0 then
+ rot = oldrot
+ gosub selectshape
+ end if
+ end if
+ pause wait
+ next press
+ # procedures
+ gosub scorepanel
+ gosub selectshape
+ gosub drawboard
+ gosub drawshape
+ refresh
+ until piecedown = true
+ # these procedures are executed when a piece is down
+ gosub newboard
+ gosub takeline
+ gosub takeline
+ until endgame = true
+ #last instructions before end of game
+ Color white
+ font ("arial",50,100)
+ text 70,100, "Game Over"
+ refresh
+ end
+ scorepanel:
+ color darkgreen
+ rect 0,0,600,450
+ color green
+ Text 300,20,"Use arrow keys"
+ Text 300,60, "I .... "+stat[0]
+ Text 300,100,"J .... "+stat[1]
+ Text 300,140,"L .... "+stat[2]
+ Text 300,180,"O .... "+stat[3]
+ Text 300,220,"S .... "+stat[4]
+ Text 300,260,"T .... "+stat[5]
+ Text 300,300,"Z .... "+stat[6]
+ Text 300,350,"Score .... "+Score
+ return
+ selectshape:
+ if shape = 0 then shape$ = tobinary (i[rot])
+ if shape = 1 then shape$ = tobinary (j[rot])
+ if shape = 2 then shape$ = tobinary (l[rot])
+ if shape = 3 then shape$ = tobinary (o[rot])
+ if shape = 4 then shape$ = tobinary (s[rot])
+ if shape = 5 then shape$ = tobinary (t[rot])
+ if shape = 6 then shape$ = tobinary (z[rot])
+ return
+ function checkmove (ref (board),a,xpos,ypos,shape$)
+ checkmove=1
+ p=1
+ For v = 1 to 4 
+ For h = 1 to 4 
+ p=p+1
+ if mid(shape$,p,1)="1" then 
+ if board[xpos+h,ypos+v]>0 then checkmove=0
+ if chr(a)="N" and (xpos+h>11 or xpos+h<2) then 
+ checkmove=0
+ return
+ end if
+if a=16777236 and xpos+h>10 then checkmove=0
+ if a=16777236 and board[xpos+h+1,ypos+v]>0 then checkmove=0
+ if a=16777234 and xpos+h<3 then checkmove=0
+ if a=16777234 and board[xpos+h-1,ypos+v]>0 then checkmove=0
+ end if
+ next h
+ next v
+ end function
+ drawshape:
+ if cores = 1 then color red
+ if cores = 2 then color blue
+ if cores = 3 then color yellow
+ if cores = 4 then color orange
+ if cores = 5 then color green
+ if cores = 6 then color purple
+ if cores = 7 then color white
+ p=1
+ For v = 1 to 4 
+ For h = 1 to 4 
+ p=p+1
+ if mid(shape$,p,1)="1" then 
+ rect xpos*20+h*20,ypos*20+v*20,19,19
+ if board[xpos+h,ypos+v+1]>0 or ypos+v=20 then piecedown=true
+ end if
+ next h
+ next v
+ if piecedown=true then 
+ if ypos<2 then endgame =true
+ return
+ end if
+ return
+ newboard:
+ p=2
+ For v = 1 to 4 
+ For h = 1 to 4 
+ if mid(shape$,p,1)="1" then board[xpos+h,ypos+v]=cores
+ p=p+1
+ next h
+ next v
+ return
+ drawboard:
+ For y = 1 to 20 
+ For x = 2 to 11
+ if board[x,y] = 1 then color red
+ if board[x,y] = 2 then color blue
+ if board[x,y] = 3 then color yellow
+ if board[x,y] = 4 then color orange
+ if board[x,y] = 5 then color green
+ if board[x,y] = 6 then color purple
+ if board[x,y] = 7 then color white
+ if board[x,y]=0 then color black
+ rect x*20,y*20,19,19
+ next x
+ next y
+ return
+ takeline:
+ For y = 20 to 1 step -1
+ complete = true
+ For x = 2 to 11
+ if board[x,y]=0 then complete = false
+ next x
+ if complete = true then
+ For row = y to 1 step -1
+ For position = 1 to 10 
+ board[position,row]=board[position,row-1]
+ next position
+ next row
+ Score = Score +1
+ ix = initialwait*.9
+ initialwait=ix
+ end if
+ next y
+ return
+clg
+Rem derivative for y= a*x^2+b*x+c
+a=-1:b=-3:c=1
+for y = -5 to 5 : for x = -5 to 5
+  circle int(30*x)+150, int(30*y)+ 150,2
+next x : next y
+line 150,0,150,300 : line 0,150,300,150
+color red
+for x = -5 to 5 step .1
+  y = a*x^2+b*x+c
+  circle 30*x +150, 150 - 30*y,2
+next x
+input "What is the derivative",r$
+for x = -5 to 5 step .1
+  dy=((a*(x+.1)^2+b*(x+.1)+c)-(a*x^2+b*x+c))/.1
+  circle 30*x +150, 150 - 30*dy,2
+next xclg
+# For this program to work you need to copy the pictures and save in your disk/pen, and then change the path in imgload if necessary.
+
+# This is the sprite sheet
+imgload 150,75,"cars.png"
+
+
+spritedim 16
+n=0
+fastgraphics
+
+# slicing vehicles from the sprite sheet
+for y = 0 to 112.5 step 37.5
+for x = 0 to 225 step 75
+spriteslice n,x,y,75,37.5
+n=n+1
+next x
+next y
+pause 2
+
+graphsize 600,300
+
+#Backgroud image
+imgload 300,150,"Town.png"
+
+
+# Placing vehicles
+for n = 0 to 3
+spriteplace n,int(rand*20)+n*100,260
+spriteshow n
+next n
+for n = 4 to 7
+spriteplace n,int(rand*20)+n*100-300,265
+spriteshow n
+next n
+for n = 8 to 11
+spriteplace n,int(rand*20)+n*100-700,275
+spriteshow n
+next n
+for n = 12 to 15
+spriteplace n,int(rand*20)+n*100-1100,280
+spriteshow n
+next n
+
+# Makes sprites move
+loop:
+for n = 0 to 7
+if n>-1 and n<4 then spritemove n,1.2,0
+if n>3 and n<8 then spritemove n,.8,0
+if spritex (n) = 600 then spritemove n,-600,0
+next n
+for n = 8 to 15
+if n>7 and n<12 then spritemove n,-1.2,0
+if n>11 and n<16 then spritemove n,-.8,0
+if spritex (n) = 0 then spritemove n,600,0
+next n
+refresh
+goto loop
+
+clg
+font "arial", 15,100
+graphsize 500,500
+fastgraphics
+
+a=-1:b=-3:c=1
+
+
+for y = -10 to 10 
+for x = -10 to 10
+  circle int(30*x)+150, int(30*y)+ 150,2
+next x
+next y
+
+line 150,0,150,300 : line 0,150,300,150
+
+color red
+for x = -10 to 10 step .1
+  y = sin( x ) 
+  circle 30*x +150, 150 - 30*y,2
+next x
+
