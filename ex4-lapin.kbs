@@ -1,0 +1,11 @@
+arc(150-25, 70-60, 60, 120,0,2*pi) # left ear
+arc(240-25, 70-60, 60, 120,0,2*pi) # right ear
+color (black,white)
+circle(200, 170, 75) # face
+rect(185, 200, 15, 10) # left tooth
+rect(200, 200, 15, 10) # right tooth
+color (black,black)
+circle(170, 150, 5) # left eye
+circle(230, 150, 5) # right eye
+
+line(150, 200, 250, 200) # mouth

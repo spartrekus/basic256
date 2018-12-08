@@ -1,0 +1,58 @@
+clg
+# For this program to work you need to copy the pictures and save in your disk/pen, and then change the path in imgload if necessary.
+
+# This is the sprite sheet
+imgload 150,75,"cars.png"
+
+
+spritedim 16
+n=0
+fastgraphics
+
+# slicing vehicles from the sprite sheet
+for y = 0 to 112.5 step 37.5
+for x = 0 to 225 step 75
+spriteslice n,x,y,75,37.5
+n=n+1
+next x
+next y
+pause 2
+
+graphsize 600,300
+
+#Backgroud image
+imgload 300,150,"Town.png"
+
+
+# Placing vehicles
+for n = 0 to 3
+spriteplace n,int(rand*20)+n*100,260
+spriteshow n
+next n
+for n = 4 to 7
+spriteplace n,int(rand*20)+n*100-300,265
+spriteshow n
+next n
+for n = 8 to 11
+spriteplace n,int(rand*20)+n*100-700,275
+spriteshow n
+next n
+for n = 12 to 15
+spriteplace n,int(rand*20)+n*100-1100,280
+spriteshow n
+next n
+
+# Makes sprites move
+loop:
+for n = 0 to 7
+if n>-1 and n<4 then spritemove n,1.2,0
+if n>3 and n<8 then spritemove n,.8,0
+if spritex (n) = 600 then spritemove n,-600,0
+next n
+for n = 8 to 15
+if n>7 and n<12 then spritemove n,-1.2,0
+if n>11 and n<16 then spritemove n,-.8,0
+if spritex (n) = 0 then spritemove n,600,0
+next n
+refresh
+goto loop

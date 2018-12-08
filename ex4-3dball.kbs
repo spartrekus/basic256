@@ -1,0 +1,84 @@
+# Based in an example program, a retake on a 3D simulation
+graphsize 500,500
+vx=.002
+vy=.003
+vz=.005
+xball=1
+yball=1
+zball=1
+while 1=1
+a = mousex / 200
+b = mousey / 200
+gosub update
+end while
+update:
+fastgraphics
+clg
+x=0
+y=2
+z=0
+gosub matrix
+x1=sx
+y1=sy
+x=2
+y=0
+z=0
+gosub matrix
+x2=sx
+y2=sy
+x=2
+y=2
+z=0
+gosub matrix
+x3=sx
+y3=sy
+color darkgreen
+poly{200,200,x1,y1,x3,y3,x2,y2}
+xball=xball+vx
+yball=yball+vy
+zball=zball+vz
+vz=vz-.0005
+if xball>2 then vx=-vx
+if xball<0 then vx=-vx
+if yball>2 then vy=-vy
+if yball<0 then vy=-vy
+if zball<0 then vz=-vz*.98
+color black
+x=xball
+y=yball
+z=0
+gosub matrix
+chord sx,sy,10,5-((y1+y2+y3)/100),0,pi*2
+color red
+x=xball
+y=yball
+z=zball
+gosub matrix
+circle sx,sy,5
+
+if y3<200 then
+color darkyellow
+poly{200,200,x1,y1,x3,y3,x2,y2}
+end if
+refresh
+clg
+return
+matrix:
+u = x
+v = y
+w = z
+u2 = u * cos(a) - v * sin(a)
+v2 = u * sin(a) + v * cos(a)
+w2 = w
+u = u2
+v = v2
+w = w2
+u2 = u
+v2 = v * cos(b) - w * sin(b)
+w2 = v * sin(b) + w * cos(b)
+u = u2
+v = v2
+w = w2
+sx = 200+u * (w + 2) * 35
+sy = 200+v * (w + 2) * 35
+return

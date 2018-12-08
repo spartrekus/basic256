@@ -1,0 +1,54 @@
+font "arial", 15,100
+ graphsize 500,500
+ fastgraphics
+ # Choose the dimentions of the graph#############
+ xmin=-5
+ xmax=5
+ ymin=-5
+ ymax=5
+ ##########################################
+ y1=0:y2=0
+ tx=500/(xmax-xmin)
+ ty=500/(ymax-ymin)
+ for y = ymin to ymax 
+ for x = xmin to xmax
+ circle tx*x-xmin*tx, ty*y-ymin*ty,3
+ if y=ymax+ymin then text tx*x-xmin*tx-15, ty*y-ymin*ty,x
+ if x=0 then text tx*x-xmin*tx-15, ty*y-ymin*ty,-y+ymax+ymin
+ next x : next y
+ line -xmin*tx,0,-xmin*tx,500 : line 0,500+ymin*ty,500,500+ymin*ty
+ rem generate area
+ #Choose the x boundaries#####################
+ bound1=-2
+ bound2=2
+ #########################################
+ area=0
+ range=bound2-bound1
+ dx=.01
+ for x = xmin to xmax step dx
+ xg= tx*x-xmin*tx
+ color red
+ p1=y1
+ #Equation1 red#############################
+ y1=x^2
+ #########################################
+ yg1= 500-ty*y1+ty*ymin
+ circle xg, yg1,1
+ color blue
+ p2=y2
+ #Equation2 blue###########################
+ y2=x-2
+ ########################################
+ yg2= 500-ty*y2+ty*ymin
+ circle xg, yg2,1
+ if x<= bound2 and x>= bound1 then
+ color darkgreen
+ area=area+((y1+p1)/2-(y2+p2)/2)*dx
+ if int(xg+1)/2 = int(xg/2+1) then line xg,yg1,xg,yg2
+ fill= 255*(x-bound1)/range
+ end if
+ next x
+ refresh
+ input "press a key",a
+ text 20,20,"Area="+area
+ refresh

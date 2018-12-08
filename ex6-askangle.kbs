@@ -1,0 +1,11 @@
+dim arrow(8) 
+arrow = {0,0,0,0,0,70,0,0}
+r=int(rand*2*pi)+.1
+clg
+fastgraphics
+for i = 0 to r step .005
+stamp 150,150,2,i,arrow
+refresh
+next i
+input "What is the angle?",r$
+print r*180/pi

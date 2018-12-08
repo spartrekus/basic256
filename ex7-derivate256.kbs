@@ -1,0 +1,17 @@
+clg
+Rem derivative for y= a*x^2+b*x+c
+a=-1:b=-3:c=1
+for y = -5 to 5 : for x = -5 to 5
+  circle int(30*x)+150, int(30*y)+ 150,2
+next x : next y
+line 150,0,150,300 : line 0,150,300,150
+color red
+for x = -5 to 5 step .1
+  y = a*x^2+b*x+c
+  circle 30*x +150, 150 - 30*y,2
+next x
+input "What is the derivative",r$
+for x = -5 to 5 step .1
+  dy=((a*(x+.1)^2+b*(x+.1)+c)-(a*x^2+b*x+c))/.1
+  circle 30*x +150, 150 - 30*dy,2
+next x
